@@ -40,3 +40,5 @@ buildNumber.properties
 .settings
 .project
 
+# Output directory contents
+tmp/output.jpg
