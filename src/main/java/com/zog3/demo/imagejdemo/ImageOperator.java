@@ -2,7 +2,6 @@ package com.zog3.demo.imagejdemo;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,6 +21,10 @@ public class ImageOperator {
 		}
 		imp = IJ.openImage(path);
 		ip = imp.getProcessor();
+	}
+	
+	public ImageOperator() {
+		// No argument constructor for unit testing.
 	}
 
 	public void crop(String rawInputString) {
@@ -56,16 +59,20 @@ public class ImageOperator {
 		return imp.getWidth();
 	}
 
-	public void scaleCanvas(double xFactor, double yFactor) {
-		ip.scale(xFactor, yFactor);
+	public void scaleCanvas(double factor) {
+		ip.scale(factor, factor);
 		imp.setProcessor(ip);
 	}
 
 	public void resize() {
-		float scaleFactor = RESIZE_WIDTH / (float) imp.getWidth();
-		float resizeHeight = scaleFactor * imp.getHeight();
-		ip = ip.resize(RESIZE_WIDTH, (int) resizeHeight);
+		ip = ip.resize(RESIZE_WIDTH, calculateHeight(getWidth(), getHeight()));
 		imp.setProcessor(ip);
+	}
+
+	private int calculateHeight(int width, int height) {
+		float scaleFactor = RESIZE_WIDTH / (float) width;
+		int resizeHeight = (int) (scaleFactor * height);
+		return resizeHeight;
 	}
 
 	public void saveAs(String path) {
